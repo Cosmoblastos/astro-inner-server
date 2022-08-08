@@ -11,8 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/styles": "^4.11.5",
     "express": "^4.17.1",
     "graphql-yoga": "^1.18.3",
-    "ioredis": "^4.14.1"
+    "ioredis": "^4.14.1",
+    "node-wifi": "^2.0.16"
   }
 }

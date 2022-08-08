@@ -1,7 +1,8 @@
 const {GraphQLServer} = require('graphql-yoga'),
     express = require('express'),
     { PubSub } = require('graphql-yoga'),
-    IORedis = require('ioredis');
+    IORedis = require('ioredis'),
+    wifi = require('node-wifi');
 
 const pubsub = new PubSub();
 const redis = new IORedis({
@@ -13,6 +14,8 @@ const redis = new IORedis({
     url: "redis://127.0.0.1:6379/13",
     maxRetriesPerRequest: 1,
 });
+
+wifi.init({ iface: null });
 
 redis.subscribe('voiceEvents', (err, count) => {
     if (err) {
@@ -40,14 +43,46 @@ const server = new GraphQLServer({
     typeDefs: `
         type Query
         type Subscription
+        type Mutation
         
         type VoiceCommand {
             type: String
             payload: String
         }
+
+        type Network {
+            ssid: String
+            bssid: String
+            mac: String
+            channel: Float
+            frequency: Float
+            signal_level: Float
+            quality: Float
+            security: String
+            security_flags: [String]
+            mode: String
+        }
+
+        input NetworkInput {
+            ssid: String
+            bssid: String
+            mac: String
+            channel: Float
+            frequency: Float
+            signal_level: Float
+            quality: Float
+            security: String
+            security_flags: [String]
+            mode: String
+        }
         
         extend type Query {
             ping: String
+            networks: [Network]
+        }
+
+        extend type Mutation {
+            setNetwork(network: NetworkInput!, password: String!): Boolean
         }
         
         extend type Subscription {
@@ -57,6 +92,21 @@ const server = new GraphQLServer({
     resolvers: {
         Query: {
             ping: () => 'pong',
+            networks: async () => {
+                let list = await wifi.scan();
+                list = list.sort((a, b) => {
+                    if (a.quality > b.quality) return -1;
+                    if (a.quality < b.quality) return 1;
+                    return 0;
+                });
+                return list;
+            }
+        },
+        Mutation: {
+            setNetwork: (_, { network, password }) => {
+                console.log(network, password);
+                return true;
+            }
         },
         Subscription: {
             voiceEvents: {
