@@ -1,0 +1,33 @@
+type Network {
+    ssid: String
+    bssid: String
+    mac: String
+    channel: Float
+    frequency: Float
+    signal_level: Float
+    quality: Float
+    security: String
+    security_flags: [String]
+    mode: String
+}
+
+input NetworkInput {
+    ssid: String
+    bssid: String
+    mac: String
+    channel: Float
+    frequency: Float
+    signal_level: Float
+    quality: Float
+    security: String
+    security_flags: [String]
+    mode: String
+}
+
+extend type Query {
+    networks: [Network]
+}
+
+extend type Mutation {
+    setNetwork(network: NetworkInput!, password: String!): Boolean
+}

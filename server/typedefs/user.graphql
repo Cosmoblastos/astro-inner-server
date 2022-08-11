@@ -1,0 +1,44 @@
+type User {
+    id: String!
+    fullName: String!
+    firstName: String
+    lastName: String
+    color: String
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date
+}
+
+input CreateUser {
+    firstName: String!
+    lastName: String!
+    color: String
+}
+
+type UserList {
+    totalCount: Int
+    total: Int
+    pag: Int
+    hasMore: Boolean
+    data: [User]
+}
+
+input UsersFilter {
+    query: String
+    createdAt: Date
+}
+
+extend type Query {
+    user(id: String!): User
+    users(
+        filter: UsersFilter,
+        ord: String = "updatedAt",
+        asc: Boolean = false,
+        pag: Int = 0
+        num: Int = 0
+    ): UserList
+}
+
+extend type Mutation {
+    createUser(input: CreateUser!): User
+}

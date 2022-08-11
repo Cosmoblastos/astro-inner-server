@@ -1,0 +1,17 @@
+scalar Date
+
+type Query {
+    ping: String
+    version: String!
+}
+
+type VoiceCommand {
+    type: String
+    payload: String
+}
+
+type Mutation
+
+type Subscription {
+    voiceEvents: VoiceCommand
+}
