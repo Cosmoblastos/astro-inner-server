@@ -3,6 +3,8 @@ const {GraphQLServer} = require('graphql-yoga'),
     resolvers = require('./server/resolvers'),
     typeDefs = require('./server/typedefs');
 
+const PORT = 4000;
+
 const server = new GraphQLServer({
     typeDefs,
     resolvers,
@@ -14,6 +16,6 @@ server.express.use(async (req, res, next) => {
     next();
 });
 
-server.start({ port: 4000 }).then(() => {
-    console.log('server ready');
+server.start({ port: PORT }).then(() => {
+    console.log(`Server ready 🤖 at port: ${PORT}`);
 });
