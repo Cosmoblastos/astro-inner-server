@@ -5,13 +5,5 @@ type Query {
     version: String!
 }
 
-type VoiceCommand {
-    type: String
-    payload: String
-}
-
 type Mutation
-
-type Subscription {
-    voiceEvents: VoiceCommand
-}
+type Subscription

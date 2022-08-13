@@ -1,0 +1,20 @@
+type VoiceCommand {
+    type: String
+    payload: String
+}
+
+type InstructionResponse {
+    responseId: String!
+    success: Boolean
+    data: String
+}
+
+input Instruction {
+    say: String!
+    waitForResponse: Boolean
+}
+
+extend type Subscription {
+    voiceEvents: VoiceCommand
+    voiceInstruction(instruction: Instruction!): InstructionResponse!
+}

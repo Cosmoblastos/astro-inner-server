@@ -1,7 +1,6 @@
 const { GraphQLScalarType } = require('graphql'),
     moment = require('moment-timezone'),
-    pjson = require('../../package.json'),
-    { pubsub } = require('../../lib/core');
+    pjson = require('../../package.json');
 
 module.exports = {
     Date: new GraphQLScalarType({
@@ -20,9 +19,4 @@ module.exports = {
         version: () => pjson.version,
         ping: () => 'pong',
     },
-    Subscription: {
-        voiceEvents: {
-            subscribe: () => pubsub.asyncIterator('voiceEvents')
-        }
-    }
 };
