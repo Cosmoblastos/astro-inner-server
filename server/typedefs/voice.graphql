@@ -1,17 +1,31 @@
+enum DataTypes { string, number }
+
 type VoiceCommand {
     type: String
     payload: String
 }
 
+type ResponseData {
+    name: String
+    type: DataTypes
+    value: String
+}
+
 type InstructionResponse {
     responseId: String!
     success: Boolean
-    data: String
+    data: ResponseData
+}
+
+input ResponseConfig {
+    waitFor: Boolean = false
+    expectedType: DataTypes = string
+    expectedValueName: String = "data"
 }
 
 input Instruction {
     say: String!
-    waitForResponse: Boolean
+    response: ResponseConfig
 }
 
 extend type Subscription {
