@@ -127,7 +127,7 @@ extend type Query {
     questionnaire(id: ID!): Questionnaire
     questionnaires: [Questionnaire]
     fullQuestionnaire(id: ID!): FullQuestionnaire!
-    userQuestionnaire(id: ID!): UserQuestionnaire!q
+    userQuestionnaire(id: ID!): UserQuestionnaire!
     fullUserQuestionnaire(id: ID!): FullUserQuestionnaire!
 }
 
