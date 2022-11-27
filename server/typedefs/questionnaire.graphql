@@ -1,0 +1,137 @@
+enum PunctuationType {
+    bad
+    medium
+    good
+}
+
+type Option {
+    id: ID!
+    name: String!
+    punctuationType: PunctuationType!
+    punctuation: Int!
+    order: Int
+}
+
+type Question {
+    id: ID!
+    name: String!
+    auxInfo: String
+    order: Int!
+    options: [Option]
+}
+
+type FullQuestionnaire {
+    id: ID!
+    name: String!
+    description: String
+    instructions: String
+    bad: [Int!]!
+    recommendationBad: String
+    medium: [Int!]!
+    recommendationMedium: String
+    good: [Int!]!
+    recommendationGood: String
+    periodicity: Int
+    questions: [Question]
+}
+
+type Questionnaire {
+    id: ID!
+    name: String!
+    description: String
+    instructions: String
+    bad: [Int!]!
+    recommendationBad: String
+    medium: [Int!]!
+    recommendationMedium: String
+    good: [Int!]!
+    recommendationGood: String
+    periodicity: Int
+}
+
+input CreateOption {
+    name: String!
+    punctuationType: PunctuationType!
+    punctuation: Int!
+    order: Int!
+}
+
+input SpreadQuestion {
+    name: String!
+    auxInfo: String
+    order: Int!
+    options: [CreateOption]
+}
+
+input SpreadQuestionnaire {
+    name: String!
+    description: String
+    instructions: String
+    bad: [Int!]!
+    recommendationBad: String
+    medium: [Int!]!
+    recommendationMedium: String
+    good: [Int!]!
+    recommendationGood: String
+    periodicity: Int
+    questions: [SpreadQuestion]
+}
+
+enum UserQuestionnaireStatus {
+    ongoing
+    finished
+}
+
+type UserQuestionnaire {
+    id: ID!
+    status: UserQuestionnaireStatus
+    percentage: Float
+    punctuation: Int
+    result: PunctuationType
+    userId: ID!
+    questionnaireId: ID!
+}
+
+type UserQuestion {
+    id: ID!
+    question: ID!
+    answer: Option!
+}
+
+type FullUserQuestionnaire {
+    id: ID!
+    status: UserQuestionnaireStatus
+    percentage: Float
+    punctuation: Int
+    result: PunctuationType
+    userQuestions: [UserQuestion]
+}
+
+input Answer {
+    optionId: ID
+    punctuation: Int
+}
+
+input CreateUserQuestion {
+    questionId: ID!
+    answer: Answer!
+}
+
+input SpreadUserQuestionnaire {
+    userId: ID!
+    questionnaireId: ID!
+    userQuestions: [CreateUserQuestion]
+}
+
+extend type Query {
+    questionnaire(id: ID!): Questionnaire
+    questionnaires: [Questionnaire]
+    fullQuestionnaire(id: ID!): FullQuestionnaire!
+    userQuestionnaire(id: ID!): UserQuestionnaire!q
+    fullUserQuestionnaire(id: ID!): FullUserQuestionnaire!
+}
+
+extend type Mutation {
+    spreadQuestionnaire(data: SpreadQuestionnaire!): Questionnaire!
+    spreadUserQuestionnaire(data: SpreadUserQuestionnaire!): UserQuestionnaire!
+}

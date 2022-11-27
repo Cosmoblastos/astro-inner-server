@@ -1,4 +1,5 @@
-const wifi = require('node-wifi');
+const wifi = require('node-wifi'),
+    { redisPublisher } = require('../../lib/core');
 
 module.exports = {
     Query: {
@@ -13,9 +14,17 @@ module.exports = {
         }
     },
     Mutation: {
-        setNetwork: (_, { network, password }) => {
-            console.log(network, password);
-            return true;
+        setNetwork: async (_, { network, password }) => {
+            try {
+                await wifi.connect({ ssid: network, password });
+                await redisPublisher.publish('SET_WIFI', JSON.stringify({
+                    network, password
+                }));
+                return true;
+            } catch (error) {
+                console.log(error);
+                return false;
+            }
         }
     }
 };
